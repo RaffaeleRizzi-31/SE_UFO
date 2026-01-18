@@ -30,8 +30,8 @@ class View:
         self.txt_titolo = ft.Text(value="Avvistamenti UFO", size=30, weight=ft.FontWeight.BOLD)
 
         # Riga 1
-        self.dd_year = ft.Dropdown(label="Anno", width=200)
-        self.dd_shape = ft.Dropdown(label="Forma", width=200)
+        self.dd_year = ft.Dropdown(label="Anno", width=200, on_change=self.controller.get_selected_year)
+        self.dd_shape = ft.Dropdown(label="Forma", width=200, on_change=self.controller.get_selected_shape)
         self.pulsante_graph = ft.ElevatedButton(text="Crea Grafo", on_click=self.controller.handle_graph)
 
         row1 = ft.Row([self.dd_year, self.dd_shape, self.pulsante_graph],alignment=ft.MainAxisAlignment.CENTER)
