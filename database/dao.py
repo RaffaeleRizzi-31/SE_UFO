@@ -121,26 +121,29 @@ class DAO:
         return result
 
     @staticmethod
-    def get_peso_nodo(shape,year,nodo):
+    def get_pesi(shape,year):
         conn = DBConnect.get_connection()
 
-        result = 0
+        result = {}
 
         cursor = conn.cursor(dictionary=True)
         query = """ 
-                        SELECT
-                            COUNT(*) as avvistamenti
-                        FROM
+                        SELECT 
+                            state, COUNT(*) as n_avvistamenti
+                        FROM 
                             sighting
-                        WHERE
-                            shape = %s
-                            AND YEAR(`s_datetime`) = %s
-                            AND state = %s
+                        WHERE 
+                            shape = %s 
+                            AND YEAR(s_datetime) = %s
+                        GROUP BY 
+                            state
                     """
 
-        cursor.execute(query, (shape,year,nodo))
-        row = cursor.fetchone()
-        result = int(row["avvistamenti"])
+        cursor.execute(query, (shape,year))
+
+        for row in cursor:
+            key = row["state"].upper()
+            result[key] = row["n_avvistamenti"]
 
         cursor.close()
         conn.close()

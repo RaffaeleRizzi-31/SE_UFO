@@ -28,11 +28,12 @@ class Model:
             if key not in tratte_uniche:
                 tratte_uniche[key] = c
         connessioni_uniche = list(tratte_uniche.values())
+        pesi = DAO.get_pesi(str(shape),float(year))
         for v, u in connessioni_uniche:
             v_nodo = self.state_dict[v]
             u_nodo = self.state_dict[u]
-            peso1 = DAO.get_peso_nodo(str(shape),float(year),str(v))
-            peso2 = DAO.get_peso_nodo(str(shape),float(year),str(u))
+            peso1 = pesi.get(v,0) # Se 'v' c'è, dammi il valore. Se non c'è, dammi 0.
+            peso2 = pesi.get(u,0) # Se 'u' c'è, dammi il valore. Se non c'è, dammi 0.
             peso_arco = peso1 + peso2
             if peso_arco != 0:
                 self.G.add_edge(v_nodo,u_nodo, peso=peso_arco)
